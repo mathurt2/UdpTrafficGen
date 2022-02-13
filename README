@@ -1,0 +1,22 @@
+UDP Traffic Generator Tool - Ver.1.0
+
+/**************************************************************************************************************
+* All Rights Reserved.
+
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained from the author.
+* Author: Tushar Mathur
+* Email: mathurt2@miamioh.edu
+* --------------------------------------------------------------------------------------------------------------
+
+* This tool is a custom traffic generator that transmits UDP packets in form of a speed test.  
+* The tool requires 5 input parameters:
+* Duration Of Run (minimum 15 seconds), Destination IP (A.B.C.D), Average Bit Rate (minimum 10 Mbps), 
+* Packet Size ( > 1200 Bytes; max 1500 bytes), UDP Port Number (default =9; if 0 then set to 9).
+* Tested on OSX 10.14.6 and Ubuntu-18.04 LTS
+
+/****************************************************************************************************************
+
+
+
+
