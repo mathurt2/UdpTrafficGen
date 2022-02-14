@@ -48,12 +48,6 @@ return curr_time;
 int main(int argc, const char* argv[]) {
 	std::cout << std::endl;
 	std::cout << "/****************************************************************************************************************************/" << std::endl;
-	std::cout << "*                 CommScope Inc. Confidential [2020]" << std::endl;
-	std::cout << "*                 All Rights Reserved." << std::endl << std::endl;
-	std::cout << "*                 Dissemination of this information or reproduction of this material" << std::endl;
-	std::cout << "*                 is  strictly forbidden unless prior written permission is obtained" << std::endl;
-	std::cout << "*                 from CommScope Incorporated." << std::endl << std::endl;
-	std::cout << "* --------------------------------------------------------------------------------------------------------------------------" << std::endl <<  std::endl;
 	std::cout << "* This tool is a custom traffic generator that transmits UDP packets.  The tool requires 5 input parameters:  " << std::endl;
 	std::cout << "* Duration Of Run (minimum 15 seconds), Destination IP (A.B.C.D), Average Bit Rate (minimum 10 Mbps), IP PDU Size ( > 1200 Bytes;" << std::endl;
 	std::cout << "* max 1500 bytes), UDP Port Number (default = 9)." << std::endl;
