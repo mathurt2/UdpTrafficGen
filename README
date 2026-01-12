@@ -1,4 +1,4 @@
-UDP Traffic Generator Tool
+UDP Traffic Generator Tool with Token Bucket implementation.
 
 * Author: Tushar Mathur
 * Email: mathurt2022@gmail.com
