@@ -1,1 +1,1 @@
-extern unsigned long tokenBucket;
+extern long long tokenBucket;
