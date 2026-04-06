@@ -70,9 +70,14 @@ int main(int argc, const char* argv[]) {
 			nRuns = 15.0;
 	}
 	const char* DIP = argv[2];
-	unsigned long long cbr = atol (argv[3]);
+	const unsigned long long MAX_CBR = 500000; // Maximum: 500 Gbps
+	unsigned long long cbr = atol(argv[3]);
 	if (cbr < 10) {
-			std::cout << "Bit-rate too low! Re-run the tool with valid value!" << std::endl << std::endl;
+			std::cout << "Bit-rate too low! Minimum: 10 Mbps. Re-run the tool with valid value!" << std::endl << std::endl;
+			return 1;
+	}
+	if (cbr > MAX_CBR) {
+			std::cout << "Bit-rate too high! Maximum: " << MAX_CBR << " Mbps. Re-run the tool with valid value!" << std::endl << std::endl;
 			return 1;
 	}
 	
@@ -112,14 +117,29 @@ int main(int argc, const char* argv[]) {
 
     inet_pton(AF_INET, DIP, &serverAddr.sin_addr);
        
-	/* Token bucket algorithm */	
+	/* Token bucket algorithm
+	 * - cbr: megabits per second (Mbps)
+	 * - time_delta: microseconds
+	 * - tokenBucket: accumulates bits (cbr × time_delta with 10^6 factors canceling)
+	 * - Each packet consumes (pktsize × 8) bits
+	 */
 	long long tokenBucket = 0;
 	unsigned long long stored_time = current_timestamp();
 	while (duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() <= runEndTime.count()) {
 		unsigned long long cT = current_timestamp();
-		tokenBucket +=  (cbr) * (cT - stored_time);
+		unsigned long long time_delta = cT - stored_time;
+
+		// Check for potential overflow before multiplication
+		if (time_delta > 0 && cbr > (LLONG_MAX / time_delta)) {
+			std::cerr << "ERROR: Token bucket calculation overflow detected! This should not occur with validated cbr values." << std::endl;
+			std::cerr << "cbr=" << cbr << " time_delta=" << time_delta << std::endl;
+			break; // Exit loop safely
+		}
+
+		tokenBucket += (cbr * time_delta);
+
 		while (tokenBucket > 0) {
-			sendPkt (sockfd, sendbuf, pktsize_payload, serverAddr);
+			sendPkt(sockfd, sendbuf, pktsize_payload, serverAddr);
 			tokenBucket -= (pktsize * 8);
 		}
 		stored_time = cT;
